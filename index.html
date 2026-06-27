@@ -730,7 +730,7 @@ async function fetchAll() {
   try {
     const urls = [
       `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${CONFIG}&split=${SPLIT}&offset=0&length=100`,
-      `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${CONFIG}&split=${SPLIT}&offset=100&length=120`,
+      `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${CONFIG}&split=${SPLIT}&offset=100&length=100`,
     ];
 
     document.querySelector('.loading-label').textContent = 'Baixando lote 1/2 (linhas 0–99)…';
