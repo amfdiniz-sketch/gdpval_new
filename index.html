@@ -746,8 +746,15 @@ async function fetchAll() {
     ];
 
     buildFilters();
-    applyFilters();
+    // Pré-selecionar sector Government
+    const secSel = document.getElementById('filterSector');
+    if (secSel) {
+      const govOpt = Array.from(secSel.options).find(o => o.value.toLowerCase().includes('govern'));
+      if (govOpt) secSel.value = govOpt.value;
+    }
     buildUI(mainArea);
+    // Reaplicar após buildUI recriar o DOM (atualiza label e tabela)
+    applyFilters();
     document.getElementById('statusBadge').textContent = `${allRows.length} tasks carregadas`;
 
   } catch (err) {
