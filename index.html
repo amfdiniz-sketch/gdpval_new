@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GDPval Explorer · openai/gdpval</title>
+<title>GDPval Explorer v4 · openai/gdpval</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
@@ -642,6 +642,220 @@
     overflow-y: auto;
   }
 
+  /* ── TABS ── */
+  .detail-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 10px 18px 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--surface);
+  }
+
+  .tab-btn {
+    padding: 7px 16px;
+    font-size: 12px;
+    font-family: var(--sans);
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── RUBRIC VISUAL ── */
+  .rubric-pretty-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .rubric-criteria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .rubric-criterion {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .rubric-criterion:hover { border-color: var(--accent-dim); }
+
+  .rubric-criterion-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .rubric-criterion-header:hover { background: var(--surface3); }
+
+  .rubric-weight-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .rubric-weight-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  .rubric-weight-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .rubric-criterion-id {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    background: var(--surface3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .rubric-criterion-desc {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .rubric-criterion-toggle {
+    font-size: 10px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .rubric-criterion-body {
+    padding: 0 14px 12px;
+    display: none;
+  }
+
+  .rubric-criterion-body.open { display: block; }
+
+  .rubric-levels {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .rubric-level {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 10px;
+    border-radius: 4px;
+    background: var(--surface3);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .rubric-level-score {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+    min-width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .rubric-level-score.score-high  { color: var(--green); }
+  .rubric-level-score.score-mid   { color: var(--yellow); }
+  .rubric-level-score.score-low   { color: var(--orange); }
+
+  .rubric-level-text { color: var(--text-muted); }
+
+  .rubric-summary {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .rubric-summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: var(--mono);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .rubric-empty {
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .rubric-section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rubric-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+
   /* row number */
   .td-rownum {
     font-family: var(--mono);
@@ -723,27 +937,29 @@ let sortDir = 1;
 // ──────────────────────────────────────────────────────────
 //  FETCH ALL ROWS (2 batches: 0-99, 100-219)
 // ──────────────────────────────────────────────────────────
+async function fetchBatch(offset, length) {
+  const url = `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${encodeURIComponent(CONFIG)}&split=${encodeURIComponent(SPLIT)}&offset=${offset}&length=${length}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} – ${url}`);
+  const data = await r.json();
+  return data.rows.map(r => r.row);
+}
+
 async function fetchAll() {
   const mainArea = document.getElementById('mainArea');
   const loadingScreen = document.getElementById('loadingScreen');
 
   try {
-    const urls = [
-      `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${CONFIG}&split=${SPLIT}&offset=0&length=100`,
-      `${API_BASE}/rows?dataset=${encodeURIComponent(DATASET)}&config=${CONFIG}&split=${SPLIT}&offset=100&length=100`,
-    ];
+    document.querySelector('.loading-label').textContent = 'Baixando lote 1/3 (linhas 0–99)…';
+    const batch1 = await fetchBatch(0, 100);
 
-    document.querySelector('.loading-label').textContent = 'Baixando lote 1/2 (linhas 0–99)…';
+    document.querySelector('.loading-label').textContent = 'Baixando lote 2/3 (linhas 100–199)…';
+    const batch2 = await fetchBatch(100, 100);
 
-    const [r1, r2] = await Promise.all(urls.map(u => fetch(u).then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status} – ${r.url}`);
-      return r.json();
-    })));
+    document.querySelector('.loading-label').textContent = 'Baixando lote 3/3 (linhas 200–219)…';
+    const batch3 = await fetchBatch(200, 20);
 
-    allRows = [
-      ...r1.rows.map(r => r.row),
-      ...r2.rows.map(r => r.row),
-    ];
+    allRows = [...batch1, ...batch2, ...batch3];
 
     buildFilters();
     // Pré-selecionar sector Government
@@ -823,6 +1039,11 @@ function buildUI(container) {
           <div class="detail-occupation" id="detailOccupation">Selecione uma linha</div>
         </div>
         <button class="detail-close" onclick="closeDetail()" title="Fechar">✕</button>
+      </div>
+      <div class="detail-tabs" id="detailTabs">
+        <button class="tab-btn active" onclick="switchTab('task')">📋 Tarefa</button>
+        <button class="tab-btn" onclick="switchTab('rubric')">🎯 Rubrica</button>
+        <button class="tab-btn" onclick="switchTab('json')">{ } JSON</button>
       </div>
       <div class="detail-body" id="detailBody">
         <div style="padding:40px 0; text-align:center; color:var(--text-dim); font-size:12px;">
@@ -936,6 +1157,21 @@ function goPage(p) {
 }
 
 // ──────────────────────────────────────────────────────────
+//  TABS
+// ──────────────────────────────────────────────────────────
+let activeTab = 'task';
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`);
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const pane = document.getElementById(`tab-${tab}`);
+  if (pane) pane.classList.add('active');
+}
+
+// ──────────────────────────────────────────────────────────
 //  ROW SELECTION → DETAIL PANEL
 // ──────────────────────────────────────────────────────────
 function selectRow(idx) {
@@ -945,103 +1181,206 @@ function selectRow(idx) {
   const row = allRows[idx];
   if (!row) return;
 
-  // Open panel
   const panel = document.getElementById('detailPanel');
   panel.classList.add('open');
 
   document.getElementById('detailTaskId').textContent = row.task_id || '—';
   document.getElementById('detailOccupation').textContent = row.occupation || '—';
 
-  const body = document.getElementById('detailBody');
-
   // Reference files
-  const files   = row.reference_files || [];
-  const urls    = row.reference_file_urls || [];
-  const hfUris  = row.reference_file_hf_uris || [];
-
-  // Deliverable files (v2 field)
+  const files         = row.reference_files || [];
+  const urls          = row.reference_file_urls || [];
+  const hfUris        = row.reference_file_hf_uris || [];
   const delivFiles    = row.deliverable_files || [];
   const delivFileUrls = row.deliverable_file_urls || [];
   const delivHfUris   = row.deliverable_file_hf_uris || [];
 
-  // Rubric
-  const rubric = row.rubric || null;
-
   const filesHtml = files.length > 0
-    ? `<div class="file-list">
-        ${files.map((fname, i) => {
-          const url    = urls[i]   || null;
-          const hfUri  = hfUris[i] || null;
-          const label  = fname.split('/').pop() || fname;
-          return `<div class="file-item">
-            <div class="file-item-name">📄 ${escHtml(label)}</div>
-            <div class="file-item-links">
-              ${url    ? `<a class="file-link url" href="${escHtml(url)}" target="_blank" rel="noopener">🔗 URL direta</a>` : ''}
-              ${hfUri  ? `<a class="file-link hf"  href="${hfUriToUrl(hfUri)}" target="_blank" rel="noopener">🤗 HF Hub</a>` : ''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`
+    ? `<div class="file-list">${files.map((fname, i) => {
+        const url   = urls[i]   || null;
+        const hfUri = hfUris[i] || null;
+        const label = fname.split('/').pop() || fname;
+        return `<div class="file-item">
+          <div class="file-item-name">📄 ${escHtml(label)}</div>
+          <div class="file-item-links">
+            ${url   ? `<a class="file-link url" href="${escHtml(url)}" target="_blank" rel="noopener">🔗 URL direta</a>` : ''}
+            ${hfUri ? `<a class="file-link hf"  href="${hfUriToUrl(hfUri)}" target="_blank" rel="noopener">🤗 HF Hub</a>` : ''}
+          </div></div>`;
+      }).join('')}</div>`
     : `<div class="empty-files">Nenhum arquivo de referência nesta task.</div>`;
 
   const delivHtml = delivFiles.length > 0
-    ? `<div class="file-list">
-        ${delivFiles.map((fname, i) => {
-          const url    = delivFileUrls[i]   || null;
-          const hfUri  = delivHfUris[i] || null;
-          const label  = fname.split('/').pop() || fname;
-          return `<div class="file-item">
-            <div class="file-item-name">📦 ${escHtml(label)}</div>
-            <div class="file-item-links">
-              ${url    ? `<a class="file-link url" href="${escHtml(url)}" target="_blank" rel="noopener">🔗 URL direta</a>` : ''}
-              ${hfUri  ? `<a class="file-link hf"  href="${hfUriToUrl(hfUri)}" target="_blank" rel="noopener">🤗 HF Hub</a>` : ''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`
+    ? `<div class="file-list">${delivFiles.map((fname, i) => {
+        const url   = delivFileUrls[i] || null;
+        const hfUri = delivHfUris[i]   || null;
+        const label = fname.split('/').pop() || fname;
+        return `<div class="file-item">
+          <div class="file-item-name">📦 ${escHtml(label)}</div>
+          <div class="file-item-links">
+            ${url   ? `<a class="file-link url" href="${escHtml(url)}" target="_blank" rel="noopener">🔗 URL direta</a>` : ''}
+            ${hfUri ? `<a class="file-link hf"  href="${hfUriToUrl(hfUri)}" target="_blank" rel="noopener">🤗 HF Hub</a>` : ''}
+          </div></div>`;
+      }).join('')}</div>`
     : `<div class="empty-files">Nenhum arquivo de entregável nesta task.</div>`;
 
-  const rubricHtml = rubric
-    ? `<div class="detail-section">
-        <div class="detail-section-label">Rubric</div>
-        <div class="rubric-raw">${escHtml(typeof rubric === 'object' ? JSON.stringify(rubric, null, 2) : String(rubric))}</div>
-      </div>`
-    : '';
-
-  body.innerHTML = `
+  // ── ABA TAREFA ──
+  const taskPane = `
     <div class="detail-section">
       <div class="detail-section-label">Metadados</div>
       <div class="detail-chips">
         <span class="chip"><span class="sector-tag ${sectorClass(row.sector)}">${row.sector || '—'}</span></span>
         <span class="chip">🧑‍💼 ${escHtml(row.occupation || '—')}</span>
-        <span class="chip">📎 ${files.length} ref.file${files.length !== 1 ? 's' : ''}</span>
+        <span class="chip">📎 ${files.length} arquivo${files.length !== 1 ? 's' : ''}</span>
       </div>
     </div>
-
     <div class="detail-section">
       <div class="detail-section-label">Prompt</div>
       <div class="prompt-box">${escHtml(row.prompt || '—')}</div>
     </div>
-
     <div class="detail-section">
       <div class="detail-section-label">Arquivos de referência (${files.length})</div>
       ${filesHtml}
     </div>
-
     <div class="detail-section">
       <div class="detail-section-label">Arquivos de entregável (${delivFiles.length})</div>
       ${delivHtml}
-    </div>
-
-    ${rubricHtml}
-
-    <div class="detail-section">
-      <div class="detail-section-label">JSON completo</div>
-      <details>
-        <summary style="cursor:pointer;font-size:12px;color:var(--text-muted);padding:6px 0;">Ver raw JSON…</summary>
-        <pre style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:10px;color:var(--text-muted);overflow:auto;max-height:300px;margin-top:8px;white-space:pre-wrap;word-break:break-all;">${escHtml(JSON.stringify(row, null, 2))}</pre>
-      </details>
     </div>`;
+
+  // ── ABA RUBRICA ──
+  const rubricPane = renderRubricPane(row);
+
+  // ── ABA JSON ──
+  const jsonPane = `
+    <div class="detail-section">
+      <div class="detail-section-label">JSON raw completo</div>
+      <pre style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);
+        padding:12px;font-family:var(--mono);font-size:10px;color:var(--text-muted);
+        overflow:auto;max-height:calc(100vh - 260px);white-space:pre-wrap;word-break:break-all;margin-top:4px;"
+      >${escHtml(JSON.stringify(row, null, 2))}</pre>
+    </div>`;
+
+  const body = document.getElementById('detailBody');
+  body.innerHTML = `
+    <div id="tab-task"   class="tab-pane${activeTab === 'task'   ? ' active' : ''}">${taskPane}</div>
+    <div id="tab-rubric" class="tab-pane${activeTab === 'rubric' ? ' active' : ''}">${rubricPane}</div>
+    <div id="tab-json"   class="tab-pane${activeTab === 'json'   ? ' active' : ''}">${jsonPane}</div>`;
+}
+
+// ──────────────────────────────────────────────────────────
+//  RUBRICA VISUAL
+// ──────────────────────────────────────────────────────────
+function renderRubricPane(row) {
+  const pretty = row.rubric_pretty || row.rubric || null;
+  const rjson  = row.rubric_json  || null;
+
+  // Tentar parsear rubric_json
+  let parsed = null;
+  if (rjson) {
+    try {
+      parsed = typeof rjson === 'object' ? rjson : JSON.parse(rjson);
+    } catch(e) { parsed = null; }
+  }
+
+  let html = '';
+
+  // ── Texto legível (rubric_pretty) ──
+  html += `<div class="rubric-section-label">Descrição em linguagem natural</div>`;
+  if (pretty) {
+    const prettyStr = typeof pretty === 'object' ? JSON.stringify(pretty, null, 2) : String(pretty);
+    html += `<div class="rubric-pretty-box">${escHtml(prettyStr)}</div>`;
+  } else {
+    html += `<div class="rubric-empty">Campo rubric_pretty não disponível para esta task.</div>`;
+  }
+
+  // ── Critérios estruturados (rubric_json) ──
+  html += `<div class="rubric-section-label" style="margin-top:20px">Critérios de avaliação (rubric_json)</div>`;
+
+  if (!parsed) {
+    html += `<div class="rubric-empty">Rubrica estruturada não disponível para esta task.</div>`;
+    return html;
+  }
+
+  // Tentar extrair critérios — a estrutura pode variar
+  const criteria = parsed.criteria || parsed.rubric || parsed.dimensions
+    || (Array.isArray(parsed) ? parsed : null);
+
+  if (!criteria || !Array.isArray(criteria) || criteria.length === 0) {
+    // Mostrar como JSON legível se não tem formato esperado
+    html += `<div class="rubric-pretty-box" style="font-size:12px;">${escHtml(JSON.stringify(parsed, null, 2))}</div>`;
+    return html;
+  }
+
+  // Resumo
+  const totalWeight = criteria.reduce((s, c) => s + (parseFloat(c.weight) || 0), 0);
+  html += `<div class="rubric-summary">
+    <span class="rubric-summary-chip">📊 ${criteria.length} critério${criteria.length !== 1 ? 's' : ''}</span>
+    ${parsed.scoring ? `<span class="rubric-summary-chip">⚖️ ${escHtml(parsed.scoring)}</span>` : ''}
+    ${totalWeight > 0 ? `<span class="rubric-summary-chip">∑ peso ${totalWeight.toFixed(2)}</span>` : ''}
+  </div>`;
+
+  // Cards dos critérios
+  html += `<div class="rubric-criteria-list">`;
+  criteria.forEach((c, idx) => {
+    const cid    = c.id || c.criterion_id || `C${idx+1}`;
+    const desc   = c.description || c.name || c.criterion || c.label || `Critério ${idx+1}`;
+    const weight = parseFloat(c.weight) || 0;
+    const pct    = totalWeight > 0 ? Math.round((weight / totalWeight) * 100) : 0;
+    const levels = c.levels || c.scoring_levels || c.scores || null;
+
+    html += `
+      <div class="rubric-criterion">
+        <div class="rubric-criterion-header" onclick="toggleCriterion(${idx})">
+          <span class="rubric-criterion-id">${escHtml(String(cid))}</span>
+          <span class="rubric-criterion-desc">${escHtml(desc)}</span>
+          ${weight > 0 ? `
+            <div class="rubric-weight-bar-wrap">
+              <div class="rubric-weight-bar" style="width:${pct}%"></div>
+            </div>
+            <span class="rubric-weight-label">${pct}%</span>` : ''}
+          <span class="rubric-criterion-toggle" id="toggle-icon-${idx}">▼</span>
+        </div>
+        <div class="rubric-criterion-body" id="criterion-body-${idx}">`;
+
+    // Níveis de pontuação
+    if (levels && Array.isArray(levels) && levels.length > 0) {
+      const maxScore = Math.max(...levels.map(l => parseFloat(l.score ?? l.points ?? l.value ?? 0)));
+      html += `<div class="rubric-levels">`;
+      levels.forEach(l => {
+        const score = parseFloat(l.score ?? l.points ?? l.value ?? 0);
+        const ratio = maxScore > 0 ? score / maxScore : 0;
+        const scoreClass = ratio >= 0.7 ? 'score-high' : ratio >= 0.4 ? 'score-mid' : 'score-low';
+        const text  = l.description || l.label || l.text || l.criteria || '';
+        html += `
+          <div class="rubric-level">
+            <span class="rubric-level-score ${scoreClass}">${score}</span>
+            <span class="rubric-level-text">${escHtml(text)}</span>
+          </div>`;
+      });
+      html += `</div>`;
+    } else {
+      // Mostrar outros campos do critério como texto
+      const extra = Object.entries(c)
+        .filter(([k]) => !['id','criterion_id','description','name','weight','label'].includes(k))
+        .map(([k,v]) => `<div style="margin-top:6px;font-size:12px;color:var(--text-muted);">
+          <span style="color:var(--text-dim);font-family:var(--mono);font-size:10px;">${escHtml(k)}: </span>${escHtml(String(v))}
+        </div>`).join('');
+      if (extra) html += extra;
+      else html += `<div style="font-size:12px;color:var(--text-dim);padding:4px 0;">Sem detalhamento de níveis disponível.</div>`;
+    }
+
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+
+  return html;
+}
+
+function toggleCriterion(idx) {
+  const body = document.getElementById(`criterion-body-${idx}`);
+  const icon = document.getElementById(`toggle-icon-${idx}`);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (icon) icon.textContent = open ? '▲' : '▼';
 }
 
 function closeDetail() {
